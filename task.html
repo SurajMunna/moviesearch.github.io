@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Search Films</title>
+	<link href="task.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body style="background-color:#FFFF99">
+<div>
+	<h1>Search Films</h1>
+	Name of Film
+	<input type="text" name="nome" id="nome">
+	<h5>Press Enter</h5>
+	<p></p>
+	<marquee>Welcome Search any movies !</marquee>
+	
+</div>
+	<div class="card">
+	<h1 class="entry-title">
+	<table id="tabela" style="font-size: 18pt">
+		<tr>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td>Title:</td>
+			<td id="title"></td>
+		<tr>
+			<td>Year:</td>
+			<td id="year"></td>
+		</tr>
+		<tr>
+			<td>genre:</td>
+			<td id="genre"></td>
+		</tr>
+		<tr>
+			<td>Run Time:</td>
+			<td id="time"></td>
+		</tr>	
+		<tr>
+			<td>Director:</td>
+			<td id="director"></td>
+		</tr>	
+		<tr>
+			<td>Writer:</td>
+			<td id="writer"></td>
+		</tr>	
+		<tr>
+			<td>Language:</td>
+			<td id="language"></td>
+		</tr>
+		<tr>
+			<td>Plot: </td>
+			<td id="plot"></td>
+			</tr>
+	</table>
+	<p style="font-size: 18pt">Poster</p>
+	<img src="" width="300" height="333" id="poster">
+	</div>
+	<script>
+		var obj, dbParam, xmlhttp, myObj, titulo, url, sespaco;
+		const inputEle = document.getElementById('nome');
+		inputEle.addEventListener('keyup', function(e){
+		  	var key = e.which || e.keyCode;
+		  	if (key == 13) { 
+		    titulo = document.getElementById('nome').value;
+		    sespaco = titulo.replace( / /gi,'+');
+		    url = "http://www.omdbapi.com/?apikey=65f8bf37&t="+sespaco;
+		  	obj = {table: "customers", limit: 20 };
+			dbParam = JSON.stringify(obj);
+			xmlhttp = new XMLHttpRequest();
+			xmlhttp.open("GET", url , true);
+			xmlhttp.onreadystatechange = function() {
+			  	if (this.readyState == 4 && this.status == 200) {
+				   	myObj = JSON.parse(this.responseText);
+				       
+				    document.getElementById("title").innerHTML = myObj.Title;
+				    document.getElementById("year").innerHTML = myObj.Year;
+				    document.getElementById("genre").innerHTML = myObj.Genre;
+				    document.getElementById("time").innerHTML = myObj.Runtime
+				    document.getElementById("director").innerHTML = myObj.Director;
+				    document.getElementById("writer").innerHTML = myObj.Writer;
+				    document.getElementById("language").innerHTML = myObj.Language;
+				    document.getElementById("poster").src = myObj.Poster;
+					document.getElementById("plot").innerHTML= myObj.Plot;
+			  	}
+			};
+			xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xmlhttp.send("x=" + dbParam);
+			}
+		});
+	</script>
+<p>&copy; 2019 Fyle<p>
+</body>
+</html>
